@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springboot.learn.mapper.UserMapper">
+	<resultMap id="userMap" type="User">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="age" column="age" />
+		<result property="sex" column="sex" />
+		<result property="telNo" column="telNo" />
+		<result property="password" column="password" />
+		<result property="gmtCreate" column="gmtCreate" />
+		<result property="gmtModify" column="gmtModify" />
+	</resultMap>
+
+	<!-- 查询用户信息 -->
+	<select id="selectUser" resultMap="userMap" resultType="List" parameterType="User" >
+	    select * from user where 1=1
+			<if test="id != null and id != ''">  
+				and id = #{id}  
+			</if>  
+			<if test="name != null and name != ''">  
+		        and name = #{name}  
+			</if>  
+			<if test="telNo != null and telNo != ''">  
+		        and telNo = #{telNo}  
+			</if>
+			order by gmtCreate desc
+	</select>
+	
+	<!-- 删除用户 -->
+	<delete id="deleteUser" parameterType="java.lang.Long" >
+    	delete from user where id = #{id}
+	</delete>
+	
+	<!-- 新增用户 -->
+	<insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+	    insert into user (name, age, sex, telNo, password, gmtCreate, gmtModify)
+	    values (#{name}, #{age}, #{sex}, #{telNo}, #{password}, #{gmtCreate}, #{gmtModify})
+	</insert>
+	
+	<!-- 修改用户 -->
+	<update id="updateUser" parameterType="User" >
+    	update user
+		    <set >
+		      <if test="name != null" >
+		        name = #{name},
+		      </if>
+		      <if test="age != null" >
+		        age = #{age},
+		      </if>
+		      <if test="sex != null" >
+		        sex = #{sex},
+		      </if>
+		      <if test="telNo != null" >
+		        telNo = #{telNo},
+		      </if>
+		      <if test="password != null" >
+		        password = #{password},
+		      </if>
+		      <if test="gmtModify != null" >
+		        gmtModify = #{gmtModify},
+		      </if>
+		    </set>
+	    where id = #{id}
+	</update>
+	
+</mapper>
