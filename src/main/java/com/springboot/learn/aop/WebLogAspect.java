@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,6 +24,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author liuzq
  * @version $Id: WebLogAspect.java, v 0.1 2016年5月24日 下午5:41:12 liuzq Exp $
  */
+@Aspect
+@Component
 public class WebLogAspect {
 
     /** 日志 */
@@ -30,7 +34,7 @@ public class WebLogAspect {
     /** 同步计算每次请求时间 */
     ThreadLocal<Long>           startTime = new ThreadLocal<>();
 
-    @Pointcut("execution(public * com.springboot.learn.web..*.*(..))")
+    @Pointcut("execution(public * com.springboot.learn.web.*.*(..))")
     public void webLog() {
     }
 
