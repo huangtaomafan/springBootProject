@@ -38,9 +38,9 @@ public class StringHiddenUtil {
 
     /**扩展过滤规则在这里*/
     static {
-        /**手机号正则表达式*/
-        REG_RULES.add("(\\d{18}|\\d{17}(\\d|X|x)|\\d{15})");
         /**身份证ID 18位或15位*/
+        REG_RULES.add("(\\d{18}|\\d{17}(\\d|X|x)|\\d{15})");
+        /**手机号正则表达式*/
         REG_RULES.add("(1[3,5,6,8,4,7]\\d{9})");
     }
 
