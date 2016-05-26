@@ -52,6 +52,5 @@ public class AsyncTaskTest {
         }
         long end = System.currentTimeMillis();
         System.out.println("异步任务全部完成，总耗时：" + (end - start) + "毫秒");
-
     }
 }
