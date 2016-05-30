@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.springboot.learn.SpringBootLearnApplication;
 import com.springboot.learn.domain.User;
@@ -47,18 +48,31 @@ public class UserServiceTest {
     }
 
     @Test
+    @Transactional
     public void testInsert() throws Exception {
         User user = new User();
-        user.setName("魏巍");
+        user.setName("gwhw4");
         user.setAge(29);
         user.setSex("男");
-        user.setTelNo("13456789265");
+        user.setTelNo("13456789615");
         user.setPassword("gqgewqgq");
         user.setGmtCreate(new Date());
         user.setGmtModify(new Date());
         int i = userSerivce.insertUser(user);
         System.out.println(i);
         System.out.println(user.getId());
+        
+        User user2 = new User();
+        user2.setName("gwhwhw3423");
+        user2.setAge(29);
+        user2.setSex("男");
+//        user2.setTelNo("13452789265");
+        user2.setPassword("gqgewqgq");
+        user2.setGmtCreate(new Date());
+        user2.setGmtModify(new Date());
+        int j = userSerivce.insertUser(user2);
+        System.out.println(j);
+        System.out.println(user2.getId());
     }
 
     @Test
