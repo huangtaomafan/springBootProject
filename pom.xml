@@ -11,6 +11,7 @@
 	<name>springBootLearn</name>
 	<description>Demo project for Spring Boot</description>
 
+	<!-- spring boot父节点依赖,引入这个之后相关的引入就不需要添加version配置，spring boot会自动选择最合适的版本进行添加。-->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
