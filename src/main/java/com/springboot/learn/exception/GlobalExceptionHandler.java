@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartException;
 
 import com.springboot.learn.domain.SpringBootResult;
 
@@ -29,6 +30,19 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public SpringBootResult myExceptionHandler(HttpServletRequest req,
                                                MyException e) throws Exception {
+        SpringBootResult result = new SpringBootResult();
+        result.setSuccess(false);
+        result.setResultCode("error");
+        result.setResultMsg(e.getMessage() + ":" + req.getRequestURL());
+        log.error("请求地址:" + req.getRequestURL());
+        log.error("错误信息:=====", e);
+        return result;
+    }
+
+    @ExceptionHandler(value = MultipartException.class)
+    @ResponseBody
+    public SpringBootResult multipartExceptionHandler(HttpServletRequest req,
+                                                      MultipartException e) throws Exception {
         SpringBootResult result = new SpringBootResult();
         result.setSuccess(false);
         result.setResultCode("error");

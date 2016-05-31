@@ -21,6 +21,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,13 +49,12 @@ public class UploadFileController extends BaseController {
      * @throws IOException 
      */
     @RequestMapping(value = "/uploadFile", method = RequestMethod.GET)
-    public String selectUser(ModelMap modelMap) throws IOException {
+    public String uploadFile(ModelMap modelMap) throws IOException {
         List<String> list = new ArrayList<>();
         //获取类路径下资源文件
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath:static/images/*");
         for (Resource resource : resources) {
-            System.out.println(resource.getFile().getName());
             list.add("/images/" + resource.getFile().getName());
         }
         modelMap.addAttribute("pictures", list);
@@ -68,7 +68,7 @@ public class UploadFileController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public SpringBootResult selectUser(HttpServletRequest request) {
+    public SpringBootResult uploadFile(HttpServletRequest request) {
         SpringBootResult result = new SpringBootResult();
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
         String path = "src\\main\\resources\\static\\images\\";
@@ -77,17 +77,14 @@ public class UploadFileController extends BaseController {
             String name = file.getOriginalFilename();
             if (!file.isEmpty()) {
                 try {
-                    byte[] bytes = file.getBytes();
                     BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(
-                        new File(path + DateUtil.getLongDateString(new Date()) + name)));
-                    stream.write(bytes);
+                        new File(path + DateUtil.getLongDateString(new Date()) + i + name)));
+                    FileCopyUtils.copy(file.getInputStream(), stream);
                     stream.close();
                 } catch (Exception e) {
                     logger.error("写入异常", e);
                     return result;
                 }
-            } else {
-                return result;
             }
         }
         result.setSuccess(true);

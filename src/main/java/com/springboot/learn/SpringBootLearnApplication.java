@@ -17,7 +17,7 @@ public class SpringBootLearnApplication extends SpringBootServletInitializer {
     }
     
     /** 
-     * spring boot打成war包时需要方法,相当于web.xlm中配置加载spring上下文初始化servlet
+     * spring boot打成war包时需要方法,相当于web.xlm中配置加载spring上下文初始化
      */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
