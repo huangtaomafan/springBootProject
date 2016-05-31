@@ -67,16 +67,16 @@ public class UploadFileController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadFileCommit", method = RequestMethod.POST)
     public SpringBootResult uploadFile(HttpServletRequest request) {
         SpringBootResult result = new SpringBootResult();
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
         String path = "src\\main\\resources\\static\\images\\";
         for (int i = 0; i < files.size(); ++i) {
             MultipartFile file = files.get(i);
-            String name = file.getOriginalFilename();
             if (!file.isEmpty()) {
                 try {
+                    String name = file.getOriginalFilename();
                     BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(
                         new File(path + DateUtil.getLongDateString(new Date()) + i + name)));
                     FileCopyUtils.copy(file.getInputStream(), stream);
