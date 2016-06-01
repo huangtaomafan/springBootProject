@@ -38,22 +38,6 @@ public class MyFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         System.err.println("过滤器doFilter!");
         chain.doFilter(request, response);
-        //获取上传的文件,校验后缀名
-//        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-//        boolean flag = false;
-//        for (int i = 0; i < files.size(); ++i) {
-//            MultipartFile file = files.get(i);
-//            if (!file.isEmpty()) {
-//                flag = true;
-//                String suffix = FileUtil.getExtensionName(file.getOriginalFilename());
-//                if ("txt,xls,xlsx,doc,docx,ppt,pptx,jpg,jpeg,png,bmp,gif".indexOf(suffix) == -1) {
-//                    throw new MultipartException("文件格式不支持");
-//                }
-//            }
-//        }
-//        if (!flag) {
-//            throw new MultipartException("请选择上传的文件!");
-//        }
     }
 
     /** 
