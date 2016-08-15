@@ -56,14 +56,13 @@ public class ExcelTest {
         //        readExcelToUpdateUserLevel();
         //        readExcelToUpdateUserDetail();
         // updateBankCard();
-        updateBindCard();
+        //        updateBindCard();
         //         writeExcel();
         //
-        //                 String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
-        //                 System.out.println(str2HexStr(str));
-        //                 String str2 =
-        //                 "416451485358726273645A7849503944312B7830476E74376246513D";
-        //                 System.out.println(hexStr2Str(str2));
+        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
+        System.out.println(str2HexStr(str));
+        String str2 = "784D676F434A475637515A4A3051535757347542345371617352413D";
+        System.out.println(hexStr2Str(str2));
 
         // String loginPwd = "sdwork1218";
         // try {
