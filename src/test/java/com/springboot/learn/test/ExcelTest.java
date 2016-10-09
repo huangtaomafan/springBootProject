@@ -50,7 +50,7 @@ public class ExcelTest {
         //        readExcelToBindCard();
         //        readExcelToInvt();
         //        readExcelToCustInfo();
-        //        readExcelToUserRel();
+        readExcelToUserRel();
         //        readExcelToUserDetail();
         //        readExcelToUsers();
         //        readExcelToUpdateUserLevel();
@@ -59,10 +59,10 @@ public class ExcelTest {
         //        updateBindCard();
         //         writeExcel();
         //
-        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
-        System.out.println(str2HexStr(str));
-        String str2 = "784D676F434A475637515A4A3051535757347542345371617352413D";
-        System.out.println(hexStr2Str(str2));
+//        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
+//        System.out.println(str2HexStr(str));
+//        String str2 = "784D676F434A475637515A4A3051535757347542345371617352413D";
+//        System.out.println(hexStr2Str(str2));
 
         // String loginPwd = "sdwork1218";
         // try {
@@ -211,26 +211,25 @@ public class ExcelTest {
      * 读取excel,生成sql脚本
      */
     private static void readExcelToUserRel() {
-        ExcelUtil excelUtil = new ExcelUtil("D://新增用户信息.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("D://0.xlsx");
         List<String[]> result = excelUtil.getAllData(0);
-        File file = new File("D://9userRelNew.sql");
+        File file = new File("D://0.sql");
         FileWriter filew = null;
         try {
             filew = new FileWriter(file);
             String level = "1";
             for (String[] strs : result) {
-                level = "1";
-                if ("2".equals(strs[35])) {
-                    level = "2";
-                }
-                if ("1".equals(strs[26])) {
-                    level = "3";
-                }
+//                level = "1";
+//                if ("2".equals(strs[35])) {
+//                    level = "2";
+//                }
+//                if ("1".equals(strs[26])) {
+//                    level = "3";
+//                }
                 filew.write(
-                    "insert into lzq_user_rel (rel_pk,id,user_id,user_system,rel_type,rel_user,rel_user_lev,rel_user_status,chanel_no,bnd_ts,rel_status,pat_id) values ('"
-                            + UUID.randomUUID().toString().replace("-", "") + "','" + strs[0]
-                            + "','" + strs[5] + "','0002','04','" + strs[1] + "','" + level
-                            + "','00','02',systimestamp,'0','" + new Random().nextInt(100) + "');");
+                    "insert into person (psnid,psnname,idnumber,mobile) values ('"
+                            + strs[0] + "','" + strs[1]
+                            + "','" + strs[2] + "','" + strs[3] + "');");
                 filew.write("\r\n");
             }
         } catch (IOException e) {
