@@ -9,13 +9,12 @@ package com.springboot.learn.test;
  * @author liuzq
  * @version $Id: RenMingBi.java, v 0.1 2016年8月15日 下午4:42:54 liuzq Exp $
  */
-public class RenMingBi {
+public class RenMinBi {
     private static final char[] data  = new char[] { '零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌',
                                                      '玖' };
     private static final char[] units = new char[] { '元', '拾', '佰', '仟', '万', '拾', '佰', '仟', '亿' };
 
     public static void main(String[] args) {
-        // TODOAuto-generated method stub
         System.out.println(convert(135689123));
     }
 

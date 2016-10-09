@@ -50,19 +50,19 @@ public class ExcelTest {
         //        readExcelToBindCard();
         //        readExcelToInvt();
         //        readExcelToCustInfo();
-        readExcelToUserRel();
+        //        readExcelToUserRel();
         //        readExcelToUserDetail();
         //        readExcelToUsers();
         //        readExcelToUpdateUserLevel();
         //        readExcelToUpdateUserDetail();
         // updateBankCard();
-        //        updateBindCard();
+        updateBindCard();
         //         writeExcel();
         //
-//        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
-//        System.out.println(str2HexStr(str));
-//        String str2 = "784D676F434A475637515A4A3051535757347542345371617352413D";
-//        System.out.println(hexStr2Str(str2));
+        //        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
+        //        System.out.println(str2HexStr(str));
+        //        String str2 = "784D676F434A475637515A4A3051535757347542345371617352413D";
+        //        System.out.println(hexStr2Str(str2));
 
         // String loginPwd = "sdwork1218";
         // try {
@@ -219,17 +219,15 @@ public class ExcelTest {
             filew = new FileWriter(file);
             String level = "1";
             for (String[] strs : result) {
-//                level = "1";
-//                if ("2".equals(strs[35])) {
-//                    level = "2";
-//                }
-//                if ("1".equals(strs[26])) {
-//                    level = "3";
-//                }
-                filew.write(
-                    "insert into person (psnid,psnname,idnumber,mobile) values ('"
-                            + strs[0] + "','" + strs[1]
-                            + "','" + strs[2] + "','" + strs[3] + "');");
+                //                level = "1";
+                //                if ("2".equals(strs[35])) {
+                //                    level = "2";
+                //                }
+                //                if ("1".equals(strs[26])) {
+                //                    level = "3";
+                //                }
+                filew.write("insert into person (psnid,psnname,idnumber,mobile) values ('" + strs[0]
+                            + "','" + strs[1] + "','" + strs[2] + "','" + strs[3] + "');");
                 filew.write("\r\n");
             }
         } catch (IOException e) {
@@ -549,15 +547,14 @@ public class ExcelTest {
      * 读取excel,生成sql脚本
      */
     private static void updateBindCard() {
-        ExcelUtil excelUtil = new ExcelUtil("D://重复卡信息.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("D://bindcard.xlsx");
         List<String[]> result = excelUtil.getAllData(0);
-        File file = new File("D://updateBindCard.sql");
+        File file = new File("D://updateBindFlag1009.sql");
         FileWriter filew = null;
         try {
             filew = new FileWriter(file);
             for (String[] strs : result) {
-                filew.write("update lzq_bind_card2 set card_seq = '" + strs[0]
-                            + "' where card_seq='" + strs[1] + "';");
+                filew.write("update tbl_bind_card set bind_flag = '03' where user_id='" + strs[1] + "';");
                 filew.write("\r\n");
             }
         } catch (IOException e) {
