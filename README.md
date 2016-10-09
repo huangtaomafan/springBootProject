@@ -1,6 +1,9 @@
-# springBootLearn
+# springBootProject
 基于SpringBoot+Mybatis+Thymeleaf实现了简单的增删改查
 logback记录日志,springboot自带jar,不需要额外引入和配置
 Thymeleaf作为视图模板,insertUser中实验了restful的put请求,SpringBoot自带过滤器不需要额外配置,只要页面有相应的hidden就可以
 简单的配置都在application.properties中,采用springBoot默认的路径和文件名
 GlobalExceptionHandler处理全局异常
+包含工作以来总结的一些UTIL工具类
+包含spring支持的注解实现的事务、定时任务、异步调用、AOP拦截打印日志示例
+使用Swagger2构建RESTful API
