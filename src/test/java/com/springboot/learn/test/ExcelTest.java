@@ -547,14 +547,14 @@ public class ExcelTest {
      * 读取excel,生成sql脚本
      */
     private static void updateBindCard() {
-        ExcelUtil excelUtil = new ExcelUtil("D://bindcard.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("D://bindflag.xlsx");
         List<String[]> result = excelUtil.getAllData(0);
         File file = new File("D://updateBindFlag1009.sql");
         FileWriter filew = null;
         try {
             filew = new FileWriter(file);
             for (String[] strs : result) {
-                filew.write("update tbl_bind_card set bind_flag = '03' where user_id='" + strs[1] + "';");
+                filew.write("update tbl_bind_card set bind_flag = '03' where user_id='" + strs[2] + "';");
                 filew.write("\r\n");
             }
         } catch (IOException e) {
