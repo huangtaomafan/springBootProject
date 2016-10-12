@@ -9,11 +9,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,16 +24,17 @@ import java.util.Map.Entry;
 public class HttpTest {
 
     public static void main(String[] args) {
-        Map<String, String> messageMap = new HashMap<String, String>();
-        messageMap.put("app_id", "zyyy_android");
-        messageMap.put("app_key", "ZW5sNWVWOWhibVJ5YjJsaw==");
-        messageMap.put("user_type", "2");
-        messageMap.put("api_name", "api.hzpt.citizenapp.login");
-        messageMap.put("params",
-            "{'id_card_type':'SFZ','login_name':'330102199112132717','password':'8B39A8192CD5A961'}");
-        //        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        String message = "";//requestData=" + gson.toJson(messageMap);
-        String urlstr = "http://ucmed.7766.org:28080/api/exec.htm";
+//        Map<String, String> messageMap = new HashMap<String, String>();
+//        messageMap.put("app_id", "zyyy_android");
+//        messageMap.put("app_key", "ZW5sNWVWOWhibVJ5YjJsaw==");
+//        messageMap.put("user_type", "2");
+//        messageMap.put("api_name", "api.hzpt.citizenapp.login");
+//        messageMap.put("params",
+//            "{'id_card_type':'SFZ','login_name':'330102199112132717','password':'8B39A8192CD5A961'}");
+//        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+//        String message = gson.toJson(messageMap);
+        String message = "id=9";
+        String urlstr = "http://127.0.0.1:8080/user/selectUser";
         try {
             URL url = new URL(urlstr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -43,9 +42,9 @@ public class HttpTest {
             connection.setDoInput(true);
             connection.setRequestMethod("POST");
             connection.connect();
-            PrintWriter conOut = new PrintWriter(
-                new BufferedOutputStream(connection.getOutputStream()));
-            conOut.write(message);
+            BufferedOutputStream conOut = 
+                new BufferedOutputStream(connection.getOutputStream());
+            conOut.write(message.getBytes());
             conOut.flush();
             conOut.close();
             Map<String, List<String>> map = connection.getHeaderFields();
