@@ -12,9 +12,13 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * http链接请求测试类
@@ -24,26 +28,25 @@ import java.util.Map.Entry;
 public class HttpTest {
 
     public static void main(String[] args) {
-        //        Map<String, String> messageMap = new HashMap<String, String>();
-        //        messageMap.put("app_id", "zyyy_android");
-        //        messageMap.put("app_key", "ZW5sNWVWOWhibVJ5YjJsaw==");
-        //        messageMap.put("user_type", "2");
-        //        messageMap.put("api_name", "api.hzpt.citizenapp.login");
-        //        messageMap.put("params",
-        //            "{'id_card_type':'SFZ','login_name':'330102199112132717','password':'8B39A8192CD5A961'}");
-        //        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        //        String message = gson.toJson(messageMap);
-        //                String message = "idNo=231005199206202532&name=刘黎明&mobile=13600001111&userId=llm13600001111&aliPayId=2088111122221";
-        //        String message = "idNo=331002199006266582&name=魏巍2&mobile=13600001111&national=中国&gender=m&address=浙江省杭州市西湖区蒋村花园2-201&certValidBeginDate=2016-10-22&certValidEndDate=2036-12-22";
-                        String message = "idNo=330104193006231346&name=张阿英&mobile=13910582131&cardNo=A10041925&psnId=0505050505050505";
-//        String message = "msg=&psnId=0505050505050505";
-        String urlstr = "http://127.0.0.1:8080/certifyBySMK";
+        Map<String, String> messageMap = new HashMap<String, String>();
+        messageMap.put("idNo", "231005199206202532");
+        messageMap.put("name", "刘黎明");
+        messageMap.put("mobile", "13600001111");
+        messageMap.put("userId", "llm13600001111");
+        messageMap.put("aliPayId", "2088111122221");
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        String message = gson.toJson(messageMap);
+        String urlstr = "http://127.0.0.1:8080/aliPayCertifyRecord";
         try {
             URL url = new URL(urlstr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");
+            // 设置接收数据的格式
+            connection.setRequestProperty("Accept", "application/json");
+            // 设置发送数据的格式
+            connection.setRequestProperty("Content-Type", "application/json");
             connection.connect();
             BufferedOutputStream conOut = new BufferedOutputStream(connection.getOutputStream());
             conOut.write(message.getBytes());
