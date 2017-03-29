@@ -7,7 +7,7 @@ package com.springboot.learn.util;
 /**
  * 身份证工具类
  * @author liuzq
- * @version $Id: CheckIdCard.java, v 0.1 2016年5月26日 下午6:09:55 liuzq Exp $
+ * @version $Id: IdCardUtil.java, v 0.1 2016年11月25日 下午5:37:31 liuzq Exp $
  */
 public class IdCardUtil {
 
