@@ -11,7 +11,6 @@ package com.springboot.learn.test;
  */
 public class ThreadTest2 {
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         new ThreadTest2().init();
     }
 
@@ -37,7 +36,6 @@ public class ThreadTest2 {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    // TODO Auto-generatedcatch block
                     e.printStackTrace();
                 }
             for (int j = 0; j < 5; j++) {
@@ -52,7 +50,6 @@ public class ThreadTest2 {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    // TODO Auto-generatedcatch block
                     e.printStackTrace();
                 }
             for (int j = 0; j < 10; j++) {

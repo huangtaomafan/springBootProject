@@ -22,7 +22,6 @@ import java.util.TreeSet;
 public class GetNameTest {
     @SuppressWarnings("rawtypes")
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         //InputStream ips
         //     =GetNameTest.class.getResourceAsStream("/com/huawei/interview/info.txt");
         //用上一行注释的代码和下一行的代码都可以，因为 info.txt 与 GetNameTest 类在同一包下面，所以，可以用下面的相对路径形式
@@ -36,7 +35,6 @@ public class GetNameTest {
             }
             sortResults(results);
         } catch (IOException e) {
-            // TODO Auto-generated catchblock
             e.printStackTrace();
         }
     }
@@ -52,7 +50,6 @@ public class GetNameTest {
 
         @Override
         public boolean equals(Object obj) {
-            // TODO Auto-generated methodstub
             //下面的代码没有执行，说明往 treeset 中增加数据时，不会使用到 equals 方法。
             boolean result = super.equals(obj);
             System.out.println(result);
@@ -62,7 +59,6 @@ public class GetNameTest {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private static void sortResults(Map results) {
-        // TODO Auto-generated method stub
         TreeSet sortedResults = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
                 // TODOAuto-generated method stub

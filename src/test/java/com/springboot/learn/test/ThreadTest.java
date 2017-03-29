@@ -17,7 +17,6 @@ public class ThreadTest {
     private Lock lock = new ReentrantLock();
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         ThreadTest tt = new ThreadTest();
         for (int i = 0; i < 2; i++) {
             new Thread(tt.new Adder()).start();
@@ -28,7 +27,6 @@ public class ThreadTest {
     private class Subtractor implements Runnable {
         @Override
         public void run() {
-            // TODO Auto-generated methodstub
             while (true) {
                 /*synchronized (ThreadTest.this) {
                 System.out.println("j--="+ j--);
@@ -47,7 +45,6 @@ public class ThreadTest {
     private class Adder implements Runnable {
         @Override
         public void run() {
-            // TODO Auto-generated methodstub
             while (true) {
                 /*synchronized (ThreadTest.this) {
                 System.out.println("j++="+ j++);
