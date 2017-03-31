@@ -52,7 +52,7 @@ public class RestTemplateTest {
 
         //post json
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
         Map<String, String> messageMap = new HashMap<String, String>();
         messageMap.put("idNo", "231005199206202532");
