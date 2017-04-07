@@ -7,11 +7,12 @@ package com.springboot.learn.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * StringUtil工具类
  * @author liuzq
- * @version $Id: StringUtil.java, v 0.1 2016年4月27日 上午11:07:55 liuzq Exp $
+ * @version $Id: StringUtil.java, v 0.1 2016年11月23日 下午7:29:43 liuzq Exp $
  */
 @SuppressWarnings("unchecked")
 public class StringUtil {
@@ -20,8 +21,14 @@ public class StringUtil {
     /*  常量和singleton。                                                           */
     /* ============================================================================ */
 
+    /** 16进制字符数组 */
+    private final static char[] mChars  = "0123456789ABCDEF".toCharArray();
+    
+    /** 16进制字符串 */
+    private final static String mHexStr      = "0123456789ABCDEF";
+
     /** 空字符串。 */
-    public static final String EMPTY_STRING = "";
+    public static final String  EMPTY_STRING = "";
 
     /* ============================================================================ */
     /*  判空函数。                                                                  */
@@ -4377,5 +4384,107 @@ public class StringUtil {
 
         return a;
     }
+    
+    /**
+     * bytes转换成十六进制字符串
+     * 
+     * @param b
+     *            byte[] byte数组
+     * @param iLen
+     *            int 取前N位处理 N=iLen
+     * @return String 
+     */
+    public static String byte2HexStr(byte[] b, int iLen) {
+        if (b == null) {
+            return null;
+        }
 
+        StringBuilder sb = new StringBuilder();
+        for (int n = 0; n < iLen; n++) {
+            sb.append(mChars[(b[n] & 0xFF) >> 4]);
+            sb.append(mChars[b[n] & 0x0F]);
+        }
+        return sb.toString().trim().toUpperCase(Locale.US);
+    }
+
+    /**
+     * bytes字符串转换为Byte值
+     * 
+     * @param src
+     *            String Byte字符串，每个Byte之间没有分隔符(字符范围:0-9 A-F)
+     * @return byte[]
+     */
+    public static byte[] hexStr2Bytes(String src) {
+        if (src == null) {
+            return null;
+        }
+
+        if (!checkHexStr(src)) {
+            return null;
+        }
+
+        /* 对输入值进行规范化整理 */
+        src = src.trim().replace(" ", "").toUpperCase(Locale.US);
+        // 处理值初始化
+        int m = 0, n = 0;
+        int iLen = src.length() / 2; // 计算长度
+        byte[] ret = new byte[iLen]; // 分配存储空间
+
+        for (int i = 0; i < iLen; i++) {
+            m = i * 2 + 1;
+            n = m + 1;
+            ret[i] = (byte) (Integer.decode("0x" + src.substring(i * 2, m) + src.substring(m, n))
+                             & 0xFF);
+        }
+        return ret;
+    }
+    
+    /**
+     * 字符串转换成十六进制字符串
+     * 
+     * @param str
+     *            String 待转换的ASCII字符串
+     * @return String
+     */
+    public static String str2HexStr(String str) {
+        if (str == null) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        byte[] bs = str.getBytes();
+
+        for (int i = 0; i < bs.length; i++) {
+            sb.append(mChars[(bs[i] & 0xFF) >> 4]);
+            sb.append(mChars[bs[i] & 0x0F]);
+        }
+        return sb.toString().trim();
+    }
+
+    /**
+     * 检查16进制字符串是否有效
+     * 
+     * @param sHex
+     *            String 16进制字符串
+     * @return boolean
+     */
+    public static boolean checkHexStr(String sHex) {
+        if (sHex == null) {
+            return false;
+        }
+
+        String sTmp = sHex.toString().trim().replace(" ", "").toUpperCase(Locale.US);
+        int iLen = sTmp.length();
+
+        if (iLen > 1 && iLen % 2 == 0) {
+            for (int i = 0; i < iLen; i++) {
+                if (!mHexStr.contains(sTmp.substring(i, i + 1))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

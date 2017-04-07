@@ -19,7 +19,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.springboot.learn.util.EncryptUtil;
 import com.springboot.learn.util.ExcelUtil;
+import com.springboot.learn.util.StringUtil;
 
 /**
  * 数据迁移脚本生成
@@ -52,11 +54,11 @@ public class ExcelTest {
         //        readExcelToCustInfo();
         //        readExcelToUserRel();
         //        readExcelToUserDetail();
-        //        readExcelToUsers();
+        readExcelToUsers();
         //        readExcelToUpdateUserLevel();
         //        readExcelToUpdateUserDetail();
         // updateBankCard();
-        updateBindCard();
+        //        updateBindCard();
         //         writeExcel();
         //
         //        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
@@ -111,40 +113,67 @@ public class ExcelTest {
      * 读取excel,生成sql脚本
      */
     private static void readExcelToUsers() {
-        ExcelUtil excelUtil = new ExcelUtil("D://新增用户信息.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("D://用户导入信息.xlsx");
         List<String[]> result = excelUtil.getAllData(0);
         File file = new File("D://users.sql");
         FileWriter filew = null;
         try {
             filew = new FileWriter(file);
-            String emailFlag = "0";
-            String level = "1";
-            String idflag = "0";
+            String user_system = "0002";
+            String mobile_verify_flag = "1";
+            String id_type = "01";
+            String id_verify_flag = "1";
+            String level = "2";
+            String user_status = "00";
+            String mob_flag = "1";
+            long currCustId = 900000l;
+            String currDate = ("20170409");
+            String custId = "";
+            int invtId = 643659;
+            String invt = "";
             for (String[] strs : result) {
-                if ("3".equals(strs[25])) {
-                    emailFlag = "1";
-                } else {
-                    emailFlag = "0";
-                }
-                level = "1";
-                if ("2".equals(strs[35])) {
-                    level = "2";
-                }
-                if ("1".equals(strs[26])) {
-                    level = "3";
-                }
-                if ("2".equals(strs[35])) {
-                    idflag = "1";
-                } else {
-                    idflag = "0";
-                }
-                filew
-                    .write("insert into lzq_users values('" + strs[0] + "','" + strs[5] + "','"
-                           + str2HexStr(strs[6]) + "','0002','" + strs[5] + "__0002','" + strs[5]
-                           + "','1','" + strs[2] + "','" + emailFlag + "','01','" + strs[23] + "','"
-                           + idflag + "','" + level + "',NULL,'00',NULL,NULL,systimestamp,'"
-                           + new Random().nextInt(100) + "');");
+                String id = UUID.randomUUID().toString().replace("-", "");
+                String password = StringUtil.trim(StringUtil.toUpperCase(StringUtil.substring(strs[2], 12)));
+                password = EncryptUtil.encodePwd(password);
+                String mobile = EncryptUtil.encrypt(StringUtil.trim(strs[0]));
+                String id_no = EncryptUtil.encrypt(StringUtil.trim(StringUtil.toUpperCase(StringUtil.trim(strs[2]))));
+                String name = StringUtil.trim(strs[1]);
+                custId = currDate.concat("000" + currCustId);
+                invt = getCodeByInt(invtId);
+                filew.write(
+                    "insert into tbl_users (id,user_id,password,user_system,mobile,mobile_verify_flag,id_type,id_no,id_verify_flag,user_level,user_status,gmt_crt_ts,pat_id,mob_flag) values('"
+                            + id + "','" + id + "','" + password + "','" + user_system + "','"
+                            + mobile + "','" + mobile_verify_flag + "','" + id_type + "','" + id_no
+                            + "','" + id_verify_flag + "','" + level + "','" + user_status
+                            + "',systimestamp,'" + new Random().nextInt(100) + "','" + mob_flag
+                            + "');");
                 filew.write("\r\n");
+                
+                filew.write(
+                    "insert into tbl_user_detail (id,user_id,user_system,user_type,cust_id,name,user_level,channel_no,regist_channel,gmt_crt_ts,pat_id) values ('"
+                            + id + "','" + id + "','0002','0','" + custId + "','" + name
+                            +  "','" + level + "','02','02',systimestamp,'"
+                            + new Random().nextInt(100) + "');");
+                filew.write("\r\n");
+                
+                filew.write(
+                    "insert into tbl_cust_inf (cust_id,cust_type,name,mobile,id_type,id_no,gmt_crt_ts,pat_id) values ('"
+                            + custId + "','0','" + name + "','"  + mobile 
+                             + "','01','" + id_no + "',systimestamp,'"
+                            + new Random().nextInt(100) + "');");
+                filew.write("\r\n");
+                
+                filew.write(
+                    "insert into tbl_invt_code (id,user_id,user_system,invt_code,pat_id) values ('"
+                            + id + "','" + id + "','0002','" + invt + "','"
+                            + new Random().nextInt(100) + "');");
+                filew.write("\r\n");
+                
+                filew.write("---------");
+                filew.write("\r\n");
+                
+                currCustId = currCustId + 1;
+                invtId=invtId+1;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -554,7 +583,8 @@ public class ExcelTest {
         try {
             filew = new FileWriter(file);
             for (String[] strs : result) {
-                filew.write("update tbl_bind_card set bind_flag = '03' where user_id='" + strs[2] + "';");
+                filew.write(
+                    "update tbl_bind_card set bind_flag = '03' where user_id='" + strs[2] + "';");
                 filew.write("\r\n");
             }
         } catch (IOException e) {
