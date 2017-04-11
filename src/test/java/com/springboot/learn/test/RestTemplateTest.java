@@ -55,15 +55,20 @@ public class RestTemplateTest {
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
         Map<String, String> messageMap = new HashMap<String, String>();
-        messageMap.put("idNo", "231005199206202532");
-        messageMap.put("name", "刘黎明");
-        messageMap.put("mobile", "13600001111");
-        messageMap.put("userId", "llm13600001111");
-        messageMap.put("aliPayId", "2088111122221");
+        messageMap.put("psnId", "666666666");
+        messageMap.put("cardNo", "A1234567");
+        messageMap.put("idNo", "330006199003216598");
+        messageMap.put("name", "ghwrhrwhr");
+        messageMap.put("mobile", "13011112222");
+        messageMap.put("national", "432423432");
+        messageMap.put("gender", "f");
+        messageMap.put("address", "hhtheherhtr");
+        messageMap.put("certValidBeginDate", "2006-06-30");
+        messageMap.put("certValidEndDate", "2026-06-30");
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         String message = gson.toJson(messageMap);
         HttpEntity<String> entity = new HttpEntity<String>(message, headers);
-        String urlstr = "http://192.168.23.239:8080/aliPayCertifyRecord";
+        String urlstr = "http://127.0.0.1:8080/smkCounterRecord";
         ResponseEntity<String> resp = restTemplate.postForEntity(urlstr, entity, String.class);
         System.out.println(resp);
 
