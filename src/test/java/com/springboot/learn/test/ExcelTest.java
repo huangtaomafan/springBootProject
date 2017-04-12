@@ -54,12 +54,12 @@ public class ExcelTest {
         //        readExcelToCustInfo();
         //        readExcelToUserRel();
         //        readExcelToUserDetail();
-        readExcelToUsers();
+        //        readExcelToUsers();
         //        readExcelToUpdateUserLevel();
         //        readExcelToUpdateUserDetail();
         // updateBankCard();
         //        updateBindCard();
-        //         writeExcel();
+        writeExcel();
         //
         //        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
         //        System.out.println(str2HexStr(str));
@@ -82,24 +82,24 @@ public class ExcelTest {
     private static void writeExcel() {
         try {
             // 创建excel文件对象
-            XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream("D://新增用户信息.xlsx"));
+            XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream("D://users01010411.xlsx"));
             // 创建一个张表
             XSSFSheet sheet = wb.getSheetAt(0);
             // 创建行对象
             XSSFRow row = null;
             // 创建表格对象
             XSSFCell cell = null;
-            // 循环行
             for (int i = sheet.getFirstRowNum() + 1; i <= sheet.getPhysicalNumberOfRows(); i++) {
                 row = sheet.getRow(i);
                 if (row == null) {// 判断是否为空
                     continue;
                 }
-                cell = row.createCell(0);// 创建单元格
-                cell.setCellValue(UUID.randomUUID().toString().replace("-", ""));// 赋值
+                System.out.println(i);
+                String mobile = EncryptUtil.decrypt(row.getCell(1).getStringCellValue());
+                cell = row.createCell(2);// 创建单元格
+                cell.setCellValue(mobile);// 赋值
             }
-
-            FileOutputStream out = new FileOutputStream("D://新增用户信息.xlsx");
+            FileOutputStream out = new FileOutputStream("D://users01010411.xlsx");
             wb.write(out);
             out.close();
             wb.close();
@@ -133,10 +133,12 @@ public class ExcelTest {
             String invt = "";
             for (String[] strs : result) {
                 String id = UUID.randomUUID().toString().replace("-", "");
-                String password = StringUtil.trim(StringUtil.toUpperCase(StringUtil.substring(strs[2], 12)));
+                String password = StringUtil
+                    .trim(StringUtil.toUpperCase(StringUtil.substring(strs[2], 12)));
                 password = EncryptUtil.encodePwd(password);
                 String mobile = EncryptUtil.encrypt(StringUtil.trim(strs[0]));
-                String id_no = EncryptUtil.encrypt(StringUtil.trim(StringUtil.toUpperCase(StringUtil.trim(strs[2]))));
+                String id_no = EncryptUtil
+                    .encrypt(StringUtil.trim(StringUtil.toUpperCase(StringUtil.trim(strs[2]))));
                 String name = StringUtil.trim(strs[1]);
                 custId = currDate.concat("000" + currCustId);
                 invt = getCodeByInt(invtId);
@@ -148,32 +150,31 @@ public class ExcelTest {
                             + "',systimestamp,'" + new Random().nextInt(100) + "','" + mob_flag
                             + "');");
                 filew.write("\r\n");
-                
+
                 filew.write(
                     "insert into tbl_user_detail (id,user_id,user_system,user_type,cust_id,name,user_level,channel_no,regist_channel,gmt_crt_ts,pat_id) values ('"
-                            + id + "','" + id + "','0002','0','" + custId + "','" + name
-                            +  "','" + level + "','02','02',systimestamp,'"
-                            + new Random().nextInt(100) + "');");
+                            + id + "','" + id + "','0002','0','" + custId + "','" + name + "','"
+                            + level + "','02','02',systimestamp,'" + new Random().nextInt(100)
+                            + "');");
                 filew.write("\r\n");
-                
+
                 filew.write(
                     "insert into tbl_cust_inf (cust_id,cust_type,name,mobile,id_type,id_no,gmt_crt_ts,pat_id) values ('"
-                            + custId + "','0','" + name + "','"  + mobile 
-                             + "','01','" + id_no + "',systimestamp,'"
-                            + new Random().nextInt(100) + "');");
+                            + custId + "','0','" + name + "','" + mobile + "','01','" + id_no
+                            + "',systimestamp,'" + new Random().nextInt(100) + "');");
                 filew.write("\r\n");
-                
+
                 filew.write(
                     "insert into tbl_invt_code (id,user_id,user_system,invt_code,pat_id) values ('"
                             + id + "','" + id + "','0002','" + invt + "','"
                             + new Random().nextInt(100) + "');");
                 filew.write("\r\n");
-                
+
                 filew.write("---------");
                 filew.write("\r\n");
-                
+
                 currCustId = currCustId + 1;
-                invtId=invtId+1;
+                invtId = invtId + 1;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,37 +192,16 @@ public class ExcelTest {
      * 读取excel,生成sql脚本
      */
     private static void readExcelToUserDetail() {
-        ExcelUtil excelUtil = new ExcelUtil("D://新增用户信息.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("D://users1101_0411.xlsx");
         List<String[]> result = excelUtil.getAllData(0);
-        File file = new File("D://userDetailNew.sql");
+        File file = new File("D://mobile.csv");
         FileWriter filew = null;
         try {
             filew = new FileWriter(file);
-            String sex = "";
-            String level = "1";
-            String cardFlag = "0";
+            String mobile = "";
             for (String[] strs : result) {
-                if ("1".equals(strs[4])) {
-                    sex = "M";
-                } else if ("2".equals(strs[4])) {
-                    sex = "F";
-                } else {
-                    sex = "";
-                }
-                level = "1";
-                cardFlag = "0";
-                if ("2".equals(strs[35])) {
-                    level = "2";
-                    cardFlag = "1";
-                }
-                if ("1".equals(strs[26])) {
-                    level = "3";
-                }
-                filew.write(
-                    "insert into lzq_user_detail (id,user_id,user_system,user_type,name,sex,card_flag,user_level,channel_no,regist_channel,gmt_crt_ts,pat_id) values ('"
-                            + strs[0] + "','" + strs[5] + "','0002','0','" + strs[3] + "','" + sex
-                            + "','" + cardFlag + "','" + level + "','02','02',systimestamp,'"
-                            + new Random().nextInt(100) + "');");
+                mobile = EncryptUtil.decrypt(strs[0]);
+                filew.write(mobile);
                 filew.write("\r\n");
             }
         } catch (IOException e) {
