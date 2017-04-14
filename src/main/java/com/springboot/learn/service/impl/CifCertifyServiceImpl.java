@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.springboot.learn.domain.CifCertifyDetailModel;
@@ -33,6 +34,9 @@ public class CifCertifyServiceImpl implements CifCertifyService {
     @Autowired
     private CifCertifyInfoMapper   cifCertifyInfoMapper;
 
+    @Value("${excel.name}")
+    private String                 excelName;
+
     /** 
      * @see com.springboot.learn.service.CifCertifyService#doTrans()
      */
@@ -40,9 +44,11 @@ public class CifCertifyServiceImpl implements CifCertifyService {
     public void doTrans() {
         try {
             System.out.println("开始数据迁移...");
-            doCertifyInfo();
-            Thread.sleep(5000);
-            doCertifyDetail();
+            if (StringUtil.equals(excelName, "certifyInfo.xlsx")) {
+                doCertifyInfo();
+            } else {
+                doCertifyDetail();
+            }
             System.out.println("完成数据迁移!");
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +61,7 @@ public class CifCertifyServiceImpl implements CifCertifyService {
      */
     private void doCertifyInfo() {
         System.out.println("开始迁移认证信息...");
-        ExcelUtil excelUtil = new ExcelUtil("D://certifyInfo.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("/home/deploy/certifyInfo.xlsx");
         List<String[]> result = excelUtil.getAllData(0);
         Timestamp tm = new Timestamp(new Date().getTime());
         CifCertifyInfoModel infoModel = new CifCertifyInfoModel();
@@ -84,7 +90,7 @@ public class CifCertifyServiceImpl implements CifCertifyService {
      */
     private void doCertifyDetail() {
         System.out.println("开始迁移认证详情...");
-        ExcelUtil excelUtil = new ExcelUtil("D://certifyDetail.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("/home/deploy/" + excelName);
         List<String[]> result = excelUtil.getAllData(0);
         Timestamp tm = new Timestamp(new Date().getTime());
         CifCertifyDetailModel detailModel = new CifCertifyDetailModel();
