@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springboot.learn.mapper.CifCertifyInfoMapper">
+
+	<resultMap id="cifCertifyInfoMap" type="CifCertifyInfoModel">
+		<result property="certifyId" column="CERTIFY_ID" />
+		<result property="realName" column="REAL_NAME" />
+		<result property="national" column="NATIONAL" />
+		<result property="gender" column="GENDER" />
+		<result property="profession" column="PROFESSION" />
+		<result property="address" column="ADDRESS" />
+		<result property="mobile" column="MOBILE" />
+		<result property="certType" column="CERT_TYPE" />
+		<result property="certNo" column="CERT_NO" />
+		<result property="certValidBeginDate" column="CERT_VALID_BEGIN_DATE" />
+		<result property="certValidEndDate" column="CERT_VALID_END_DATE" />
+		<result property="gmtCreate" column="GMT_CREATE" />
+		<result property="gmtModified" column="GMT_MODIFIED" />
+	</resultMap>
+
+	<!-- 查询认证信息 -->
+	<select id="getCertifyInfoById" resultMap="cifCertifyInfoMap"
+		parameterType="java.lang.String">
+		select * from cif_certify_info where
+		certify_id=#{certifyId}
+	</select>
+
+	<!-- 修改认证信息 -->
+	<update id="updateCertifyInfo" parameterType="CifCertifyInfoModel">
+		update cif_certify_info
+		<set>
+			<if test="realName != null and realName != ''">
+				real_name = #{realName},
+			</if>
+			<if test="national != null and national != ''">
+				national = #{national},
+			</if>
+			<if test="gender != null and gender != ''">
+				gender = #{gender},
+			</if>
+			<if test="profession != null and profession != ''">
+				profession = #{profession},
+			</if>
+			<if test="address != null and address != ''">
+				address = #{address},
+			</if>
+			<if test="mobile != null and mobile != ''">
+				mobile = #{mobile},
+			</if>
+			<if test="certValidBeginDate != null">
+				cert_valid_begin_date = #{certValidBeginDate},
+			</if>
+			<if test="certValidEndDate != null">
+				cert_valid_end_date = #{certValidEndDate},
+			</if>
+			<if test="gmtModified != null">
+				gmt_modified = #{gmtModified},
+			</if>
+		</set>
+		where certify_id = #{certifyId}
+	</update>
+
+	<!-- 新增认证信息 -->
+	<insert id="insertCertifyInfo" parameterType="CifCertifyInfoModel">
+		insert into
+		cif_certify_info
+		(certify_id, real_name, national,
+		gender,profession,address,
+		mobile,cert_type, cert_no,
+		cert_valid_begin_date,cert_valid_end_date,
+		gmt_create,gmt_modified)
+		values
+		(#{certifyId,jdbcType=VARCHAR},
+		#{realName,jdbcType=VARCHAR},
+		#{national,jdbcType=VARCHAR},
+		#{gender,jdbcType=VARCHAR},
+		#{profession,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{mobile,jdbcType=VARCHAR},
+		#{certType,jdbcType=VARCHAR},
+		#{certNo,jdbcType=VARCHAR},
+		#{certValidBeginDate,jdbcType=DATE},
+		#{certValidEndDate,jdbcType=DATE},
+		#{gmtCreate,jdbcType=TIMESTAMP},
+		#{gmtModified,jdbcType=TIMESTAMP})
+	</insert>
+
+</mapper>

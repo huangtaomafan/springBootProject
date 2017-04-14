@@ -8,6 +8,10 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.springboot.learn.service.CifCertifyService;
+
 /**
  * 基于注解的servletContext监听器
  * @author liuzq
@@ -15,6 +19,9 @@ import javax.servlet.annotation.WebListener;
  */
 @WebListener
 public class MyServletContextListener implements ServletContextListener {
+
+    @Autowired
+    private CifCertifyService cifCertifyService;
 
     /** 
      * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
@@ -31,6 +38,7 @@ public class MyServletContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0) {
         System.err.println("ServletContextListener Initialized!");
         System.err.println(arg0.getServletContext().getServerInfo());
+        cifCertifyService.doTrans();
     }
 
 }

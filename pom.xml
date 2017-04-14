@@ -69,6 +69,13 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		
+		<!-- oracle驱动包 -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.4.0</version>
+		</dependency>
+		
 		<!-- 数据连接池 -->
 		<dependency>
             <groupId>com.alibaba</groupId>

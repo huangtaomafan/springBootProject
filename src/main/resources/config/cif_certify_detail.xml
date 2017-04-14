@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springboot.learn.mapper.CifCertifyDetailMapper">
+
+	<resultMap id="cifCertifyDetailMap" type="CifCertifyDetailModel">
+		<result property="certifyId" column="CERTIFY_ID" />
+		<result property="certifyChannel" column="CERTIFY_CHANNEL" />
+		<result property="certifyType" column="CERTIFY_TYPE" />
+		<result property="gmtCreate" column="GMT_CREATE" />
+	</resultMap>
+
+	<!-- 查询认证详细信息 -->
+	<select id="getCertifyDetailById" resultType="List"
+		resultMap="cifCertifyDetailMap" parameterType="java.lang.String">
+		select * from
+		cif_certify_detail where
+		certify_id=#{certifyId}
+	</select>
+
+	<!-- 根据id和类型查询认证详细信息 -->
+	<select id="getCertifyDetailByChannel" resultType="List"
+		resultMap="cifCertifyDetailMap" parameterType="java.lang.String">
+		select * from
+		cif_certify_detail where
+		certify_channel=#{0} and
+		certify_id=#{1}
+	</select>
+
+	<!-- 查询认证渠道数 -->
+	<select id="getCertifyCount" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(1) from cif_certify_detail where
+		certify_id=#{certifyId}
+	</select>
+
+
+	<!-- 新增认证详细信息 -->
+	<insert id="insertCertifyDetail" parameterType="CifCertifyDetailModel">
+		insert into
+		cif_certify_detail
+		(certify_id, certify_channel,
+		certify_type,gmt_create)
+		values
+		(#{certifyId,jdbcType=VARCHAR},
+		#{certifyChannel,jdbcType=VARCHAR},
+		#{certifyType,jdbcType=VARCHAR},
+		#{gmtCreate,jdbcType=TIMESTAMP})
+	</insert>
+
+</mapper>
