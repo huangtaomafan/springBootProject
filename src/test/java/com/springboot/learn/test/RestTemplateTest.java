@@ -55,7 +55,7 @@ public class RestTemplateTest {
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
         Map<String, String> messageMap = new HashMap<String, String>();
-        messageMap.put("psnId", "147909036223439");
+        messageMap.put("psnId", "141585773230231");
         messageMap.put("cardNo", "6222021202038149400");
         messageMap.put("idNo", "340323199009180459");
         messageMap.put("name", "王浩");

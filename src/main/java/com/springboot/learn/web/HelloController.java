@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
+import com.springboot.learn.domain.SpringBootResult;
 import com.springboot.learn.domain.User;
 import com.springboot.learn.exception.MyException;
 import com.springboot.learn.service.UserService;
@@ -29,12 +30,14 @@ import com.springboot.learn.util.StringUtil;
 public class HelloController {
 
     @Autowired
-    private UserService         userSerivce;
+    private UserService userSerivce;
 
     @ResponseBody
     @RequestMapping("/hello")
-    public String index() {
-        return "Hello World！";
+    public SpringBootResult index() {
+        SpringBootResult result = new SpringBootResult();
+        result.setData("Hello World！");
+        return result;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
