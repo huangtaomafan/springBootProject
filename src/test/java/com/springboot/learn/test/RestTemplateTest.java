@@ -54,7 +54,14 @@ public class RestTemplateTest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
-        Map<String, String> messageMap = new HashMap<String, String>();
+        //        LinkedMultiValueMap<String, String> messageMap = new LinkedMultiValueMap();
+        //        messageMap.add("psnId", "141585773230231");
+        //        messageMap.add("cardNo", "6222021202038149400");
+        //        messageMap.add("idNo", "340323199009180459");
+        //        messageMap.add("name", "王浩");
+        //        messageMap.add("mobile", "15267182670");
+        //        messageMap.add("reqSeq", "20170412142715000002863866");
+        Map<String, String> messageMap = new HashMap<>();
         messageMap.put("psnId", "141585773230231");
         messageMap.put("cardNo", "6222021202038149400");
         messageMap.put("idNo", "340323199009180459");
@@ -63,8 +70,10 @@ public class RestTemplateTest {
         messageMap.put("reqSeq", "20170412142715000002863866");
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         String message = gson.toJson(messageMap);
+        //        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<LinkedMultiValueMap<String, String>>(
+        //            messageMap, headers);
         HttpEntity<String> entity = new HttpEntity<String>(message, headers);
-        String urlstr = "http://192.168.23.239:8080/bankCardCertifyRecord";
+        String urlstr = "http://127.0.0.1:8080/smkCounterRecord";
         ResponseEntity<String> resp = restTemplate.postForEntity(urlstr, entity, String.class);
         System.out.println(resp);
 
