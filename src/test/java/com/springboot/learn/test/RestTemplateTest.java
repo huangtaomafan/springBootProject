@@ -67,13 +67,23 @@ public class RestTemplateTest {
         messageMap.put("idNo", "340323199009180459");
         messageMap.put("name", "王浩");
         messageMap.put("mobile", "15267182670");
-        messageMap.put("reqSeq", "20170412142715000002863866");
+        messageMap.put("reqSeq", System.currentTimeMillis() + "");
+        messageMap.put("national", "中国");
+        messageMap.put("gender", "M");
+        messageMap.put("address", "中国杭州近江时代大厦");
+        messageMap.put("certValidEndDate", "2027-04-23");
+        Map<String, Object> openMap = new HashMap<>();
+        openMap.put("reqSeq", System.currentTimeMillis() + "");
+        openMap.put("appId", "10001");
+        openMap.put("method", "smkCounterRecord");
+        openMap.put("sign", "123456");
+        openMap.put("bizContent", messageMap);
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        String message = gson.toJson(messageMap);
+        String message = gson.toJson(openMap);
         //        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<LinkedMultiValueMap<String, String>>(
         //            messageMap, headers);
         HttpEntity<String> entity = new HttpEntity<String>(message, headers);
-        String urlstr = "http://127.0.0.1:8080/smkCounterRecord";
+        String urlstr = "http://127.0.0.1:8088/gateway";
         ResponseEntity<String> resp = restTemplate.postForEntity(urlstr, entity, String.class);
         System.out.println(resp);
 
