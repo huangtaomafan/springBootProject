@@ -78,7 +78,7 @@ public class RestTemplateTest {
         //        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<LinkedMultiValueMap<String, String>>(
         //            messageMap, headers);
         HttpEntity<String> entity = new HttpEntity<String>(messageMapStr, headers);
-        String urlstr = "http://127.0.0.1:8080/aliPayCertifyRecord";
+        String urlstr = "http://192.168.23.239:8080/aliPayCertifyRecord";
         ResponseEntity<String> resp = restTemplate.postForEntity(urlstr, entity, String.class);
         System.out.println(resp);
         //url post
