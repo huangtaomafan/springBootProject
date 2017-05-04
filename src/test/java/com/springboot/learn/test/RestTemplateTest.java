@@ -73,6 +73,7 @@ public class RestTemplateTest {
         messageMap.put("aliPayId", "666666666");
         messageMap.put("cardNo", "A12345678");
         messageMap.put("cardType", "1");
+        messageMap.put("psnId", "149214882442259");
         String messageMapStr = gson.toJson(messageMap);
         //        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<LinkedMultiValueMap<String, String>>(
         //            messageMap, headers);
