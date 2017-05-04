@@ -23,6 +23,9 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.springboot.learn.SpringBootLearnApplication;
+import com.springboot.learn.util.RSAUtil;
+
+import net.sf.json.JSONObject;
 
 /**
  * RestTemplate 测试类
@@ -32,7 +35,7 @@ import com.springboot.learn.SpringBootLearnApplication;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SpringBootLearnApplication.class)
 @WebAppConfiguration //web层要加
-public class RestTemplateTest {
+public class RestTemplateSignTest {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -65,21 +68,43 @@ public class RestTemplateTest {
         String reqSeq = System.currentTimeMillis() + "";
         //请求接口实际数据
         Map<String, String> messageMap = new HashMap<>();
-        messageMap.put("reqSeq", reqSeq);
+        messageMap.put("psnId", "141585773230231");
+        messageMap.put("cardNo", "6222021202038149400");
         messageMap.put("idNo", "340323199009180459");
         messageMap.put("name", "王浩");
         messageMap.put("mobile", "15267182670");
-        messageMap.put("userId", "141585773230231");
-        messageMap.put("aliPayId", "666666666");
-        messageMap.put("cardNo", "A12345678");
-        messageMap.put("cardType", "1");
+        messageMap.put("reqSeq", reqSeq);
+        messageMap.put("national", "中国");
+        messageMap.put("gender", "M");
+        messageMap.put("address", "中国杭州近江时代大厦");
+        messageMap.put("certValidEndDate", "2027-04-23");
         String messageMapStr = gson.toJson(messageMap);
+        //请求网关数据
+        Map<String, String> openMap = new HashMap<>();
+        openMap.put("reqSeq", reqSeq);
+        openMap.put("appId", "10001");
+        openMap.put("method", "smkCounterRecord");
+        openMap.put("bizContent", messageMapStr);
+        openMap.put("sign_param", "appId,method,bizContent");
+        //加签
+        openMap.put("sign", RSAUtil.rsaSign(openMap));
+        String message = gson.toJson(openMap);
         //        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<LinkedMultiValueMap<String, String>>(
         //            messageMap, headers);
-        HttpEntity<String> entity = new HttpEntity<String>(messageMapStr, headers);
-        String urlstr = "http://127.0.0.1:8080/aliPayCertifyRecord";
+        HttpEntity<String> entity = new HttpEntity<String>(message, headers);
+        String urlstr = "http://127.0.0.1:8088/gateway";
         ResponseEntity<String> resp = restTemplate.postForEntity(urlstr, entity, String.class);
         System.out.println(resp);
+        String result = resp.getBody();
+        JSONObject json = JSONObject.fromObject(result);
+        //验签
+        Map<String, String> checkMap = new HashMap<>();
+        checkMap.put("reqSeq", reqSeq);
+        checkMap.put("sign_param", "success,value");
+        checkMap.put("success", json.getString("success"));
+        checkMap.put("value", json.getString("value"));
+        checkMap.put("sign", json.getString("sign"));
+        System.out.println(RSAUtil.rsaCheck(checkMap));
         //url post
         //        String template = baseUrl + "/demo?app={0}&userId={1}";
         //        String url = MessageFormat.format(template,app,userId);
