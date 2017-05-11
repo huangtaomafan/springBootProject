@@ -66,13 +66,13 @@ public class CifCertifyServiceImpl implements CifCertifyService {
         Timestamp tm = new Timestamp(new Date().getTime());
         CifCertifyInfoModel infoModel = new CifCertifyInfoModel();
         for (String[] strs : result) {
-            infoModel.setCertifyId(strs[0]);
+            infoModel.setCertifyId(strs[3]);
             infoModel.setRealName(strs[2]);
-            infoModel.setMobile(strs[3]);
+            infoModel.setMobile(strs[0]);
             infoModel.setGmtModified(tm);
             //新增/修改认证信息
             CifCertifyInfoModel cifCertifyInfoModel = cifCertifyInfoMapper
-                .getCertifyInfoById(strs[2]);
+                .getCertifyInfoById(strs[3]);
             if (null == cifCertifyInfoModel) {
                 infoModel.setCertType("01");
                 infoModel.setCertNo(strs[1]);
@@ -95,9 +95,9 @@ public class CifCertifyServiceImpl implements CifCertifyService {
         Timestamp tm = new Timestamp(new Date().getTime());
         CifCertifyDetailModel detailModel = new CifCertifyDetailModel();
         for (String[] strs : result) {
-            detailModel.setCertifyId(strs[0]);
-            detailModel.setCertifyChannel(transCertifyChannel(strs[1]));
-            detailModel.setCertifyType(strs[2]);
+            detailModel.setCertifyId(strs[2]);
+            detailModel.setCertifyChannel(transCertifyChannel(strs[0]));
+            detailModel.setCertifyType(strs[1]);
             detailModel.setGmtCreate(tm);
             //新增认证详情
             cifCertifyDetailMapper.insertCertifyDetail(detailModel);
