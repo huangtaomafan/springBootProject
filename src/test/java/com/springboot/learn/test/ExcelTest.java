@@ -54,12 +54,12 @@ public class ExcelTest {
         //        readExcelToCustInfo();
         //        readExcelToUserRel();
         //        readExcelToUserDetail();
-        //        readExcelToUsers();
+        readExcelToUsers();
         //        readExcelToUpdateUserLevel();
         //        readExcelToUpdateUserDetail();
         // updateBankCard();
         //        updateBindCard();
-        writeExcel();
+        //        writeExcel();
         //
         //        String str = "AbX/jLja8JH0zCxVryaKeW8+WfI=";
         //        System.out.println(str2HexStr(str));
@@ -113,9 +113,9 @@ public class ExcelTest {
      * 读取excel,生成sql脚本
      */
     private static void readExcelToUsers() {
-        ExcelUtil excelUtil = new ExcelUtil("D://用户导入信息.xlsx");
+        ExcelUtil excelUtil = new ExcelUtil("D://L1.xlsx");
         List<String[]> result = excelUtil.getAllData(0);
-        File file = new File("D://users.sql");
+        File file = new File("D://L1.sql");
         FileWriter filew = null;
         try {
             filew = new FileWriter(file);
@@ -126,36 +126,45 @@ public class ExcelTest {
             String level = "2";
             String user_status = "00";
             String mob_flag = "1";
-            long currCustId = 900000l;
-            String currDate = ("20170409");
+            long currCustId = 999000l;
+            String currDate = ("20170529");
             String custId = "";
-            int invtId = 643659;
+            String cardSeq = "";
+            int invtId = 643751;
             String invt = "";
             for (String[] strs : result) {
                 String id = UUID.randomUUID().toString().replace("-", "");
-                String password = StringUtil
-                    .trim(StringUtil.toUpperCase(StringUtil.substring(strs[2], 12)));
+                String password = "hfi123456";
                 password = EncryptUtil.encodePwd(password);
-                String mobile = EncryptUtil.encrypt(StringUtil.trim(strs[0]));
+                String mobile = EncryptUtil.encrypt(StringUtil.trim(strs[1]));
                 String id_no = EncryptUtil
                     .encrypt(StringUtil.trim(StringUtil.toUpperCase(StringUtil.trim(strs[2]))));
-                String name = StringUtil.trim(strs[1]);
+                String name = StringUtil.trim(strs[0]);
                 custId = currDate.concat("000" + currCustId);
+                cardSeq = currDate.concat("00000" + currCustId);
                 invt = getCodeByInt(invtId);
-                filew.write(
-                    "insert into tbl_users (id,user_id,password,user_system,mobile,mobile_verify_flag,id_type,id_no,id_verify_flag,user_level,user_status,gmt_crt_ts,pat_id,mob_flag) values('"
-                            + id + "','" + id + "','" + password + "','" + user_system + "','"
-                            + mobile + "','" + mobile_verify_flag + "','" + id_type + "','" + id_no
-                            + "','" + id_verify_flag + "','" + level + "','" + user_status
-                            + "',systimestamp,'" + new Random().nextInt(100) + "','" + mob_flag
-                            + "');");
+                //                filew.write(
+                //                    "insert into tbl_users (id,user_id,password,user_system,mobile,mobile_verify_flag,id_type,id_no,id_verify_flag,user_level,user_status,gmt_crt_ts,pat_id,mob_flag) values('"
+                //                            + id + "','" + id + "','" + password + "','" + user_system + "','"
+                //                            + mobile + "','" + mobile_verify_flag + "','" + id_type + "','" + id_no
+                //                            + "','" + id_verify_flag + "','" + level + "','" + user_status
+                //                            + "',systimestamp,'" + new Random().nextInt(100) + "','" + mob_flag
+                //                            + "');");
+                //                filew.write("\r\n");
+                //
+                //                filew.write(
+                //                    "insert into tbl_user_detail (id,user_id,user_system,user_type,cust_id,name,user_level,channel_no,regist_channel,gmt_crt_ts,pat_id) values ('"
+                //                            + id + "','" + id + "','0002','0','" + custId + "','" + name + "','"
+                //                            + level + "','02','02',systimestamp,'" + new Random().nextInt(100)
+                //                            + "');");
+                //                filew.write("\r\n");
+
+                filew.write("update tbl_users set id_no = '" + id_no + "' where user_id='" + strs[4]
+                            + "';");
                 filew.write("\r\n");
 
-                filew.write(
-                    "insert into tbl_user_detail (id,user_id,user_system,user_type,cust_id,name,user_level,channel_no,regist_channel,gmt_crt_ts,pat_id) values ('"
-                            + id + "','" + id + "','0002','0','" + custId + "','" + name + "','"
-                            + level + "','02','02',systimestamp,'" + new Random().nextInt(100)
-                            + "');");
+                filew.write("update tbl_user_detail set name = '" + name + "' where user_id='"
+                            + strs[4] + "';");
                 filew.write("\r\n");
 
                 filew.write(
@@ -164,10 +173,23 @@ public class ExcelTest {
                             + "',systimestamp,'" + new Random().nextInt(100) + "');");
                 filew.write("\r\n");
 
+                //                filew.write(
+                //                    "insert into tbl_invt_code (id,user_id,user_system,invt_code,pat_id) values ('"
+                //                            + id + "','" + id + "','0002','" + invt + "','"
+                //                            + new Random().nextInt(100) + "');");
+                //                filew.write("\r\n");
+
                 filew.write(
-                    "insert into tbl_invt_code (id,user_id,user_system,invt_code,pat_id) values ('"
-                            + id + "','" + id + "','0002','" + invt + "','"
+                    "insert into tbl_bank_card (card_seq,card_type,card_no,creat_ts,lst_mdy_ts,pat_id) values ('"
+                            + cardSeq + "','02','" + strs[3] + "',systimestamp,systimestamp,'"
                             + new Random().nextInt(100) + "');");
+                filew.write("\r\n");
+
+                filew.write(
+                    "insert into tbl_bind_card (card_pk,id,user_id,user_system,card_seq,creat_ts,lst_mdy_ts,rel_status,pat_id,bind_flag) values ('"
+                            + UUID.randomUUID().toString().replace("-", "") + "','" + id + "','"
+                            + id + "','0002','" + cardSeq + "',systimestamp,systimestamp,'0','"
+                            + new Random().nextInt(100) + "','02');");
                 filew.write("\r\n");
 
                 filew.write("---------");
